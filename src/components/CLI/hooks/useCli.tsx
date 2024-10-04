@@ -15,7 +15,7 @@ export const useCli = (decreaseCommandsLeft: () => void) => {
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const { checkServerStatus } = useServerStatus();
-  
+
   // useRefs
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,12 +30,13 @@ export const useCli = (decreaseCommandsLeft: () => void) => {
           `(error) ERR unknown command '${commandName}'`,
         ]);
       } else {
-        await checkServerStatus(); 
+        await checkServerStatus();
         handleCommand({ command, setOutput }); // Execute if not blacklisted
       }
 
-    setCommand(''); // Clear input
-    decreaseCommandsLeft(); // Call to update remaining commands
+      setCommand(''); // Clear input
+      decreaseCommandsLeft(); // Call to update remaining commands
+    }
   };
 
   useEffect(() => {
@@ -70,7 +71,7 @@ export const useCli = (decreaseCommandsLeft: () => void) => {
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      handleCommandWrapper();
+      handleCommandWrapper(e);
       if (command.trim().length !== 0) {
         setCommandHistory((prev) => [...prev, command]);
         setHistoryIndex(-1);
