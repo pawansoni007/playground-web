@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, KeyboardEvent, ChangeEvent } from 'react';
 // utils
 import { handleCommand } from '@/shared/utils/cliUtils';
 import blacklistedCommands from '@/shared/utils/blacklist'; // Assuming you added blacklist here
+import { useServerStatus } from '@/components/ServerStatus/context/ServerContext';
 
 export const useCli = (decreaseCommandsLeft: () => void) => {
   // states
@@ -13,12 +14,13 @@ export const useCli = (decreaseCommandsLeft: () => void) => {
   //Initialise the command history with sessionStorage
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
-
+  const { checkServerStatus } = useServerStatus();
+  
   // useRefs
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleCommandWrapper = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleCommandWrapper = async (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       const commandName = command.trim().split(' ')[0].toUpperCase(); // Extract the command
 
@@ -28,6 +30,7 @@ export const useCli = (decreaseCommandsLeft: () => void) => {
           `(error) ERR unknown command '${commandName}'`,
         ]);
       } else {
+        await checkServerStatus(); 
         handleCommand({ command, setOutput }); // Execute if not blacklisted
       }
 

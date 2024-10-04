@@ -1,7 +1,7 @@
 // types
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
-
+import { ServerStatusProvider } from '@/components/ServerStatus/context/ServerContext';
 // styles
 import '@/styles/globals.css';
 
@@ -21,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <ServerStatusProvider>
+        <body>{children}</body>
+      </ServerStatusProvider>
     </html>
   );
 }

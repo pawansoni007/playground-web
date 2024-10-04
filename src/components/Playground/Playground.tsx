@@ -11,6 +11,7 @@ import { formatTime } from '@/shared/utils/commonUtils';
 // images and icons
 import Image from 'next/image';
 import { usePlayground } from './hooks/usePlayground';
+import TerminalStatus from '../ServerStatus/TerminalStatus';
 
 export default function Playground() {
   const { decreaseCommandsLeft, search, timeLeft, commandsLeft, setSearch } =
@@ -35,12 +36,13 @@ export default function Playground() {
       <main className="flex flex-col lg:flex-row gap-10 flex-grow overflow-hidden px-4">
         <div className="w-full lg:w-1/2 flex flex-col">
           <div className="bg-gray-900 rounded-lg">
-            <div className="bg-gray-900 px-4 py-4 flex items-center rounded-lg">
+            <div className="bg-gray-900 px-4 py-4 flex items-center rounded-lg justify-between">
               <div className="flex space-x-2">
                 <Dice5 className="w-4 h-4 bg-red-500" />
                 <Dice1 className="w-4 h-4 bg-yellow-500" />
                 <Dice3 className="w-4 h-4 bg-green-500" />
               </div>
+              <TerminalStatus />
             </div>
             <div className="h-64 md:h-96 bg-gray-100 rounded-lg overflow-hidden shadow-md">
               <Cli decreaseCommandsLeft={decreaseCommandsLeft} />
